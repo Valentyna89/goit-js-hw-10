@@ -20,24 +20,36 @@ function onInputClick(e) {
     refs.list.innerHTML = '';
     return;
   }
-  fetchCountries(inputValue).then(data => {
-    if (data.length > 10) {
-      return Notiflix.Notify.info(
-        'Too many matches found. Please enter a more specific name.'
-      );
-    }
-    if (data.length > 1 && data.length < 11) {
-      refs.list.innerHTML = createList(data);
-    }
-    if (data.length === 1) {
-      refs.list.innerHTML = createMarkup(data[0]);
-    }
-    if (!data.length) {
-      return Notiflix.Notify.failure(
-        'Oops, there is no country with that name'
-      );
-    }
-  });
+  fetchCountries(inputValue)
+    .then(data => {
+      if (data.length > 10) {
+        refs.list.innerHTML = '';
+        return Notiflix.Notify.info(
+          'Too many matches found. Please enter a more specific name.'
+        );
+      }
+      if (data.length > 1 && data.length < 11) {
+        refs.list.innerHTML = '';
+        refs.list.insertAdjacentHTML('beforeend', createList(data));
+      }
+      if (data.length === 1) {
+        refs.list.innerHTML = '';
+        refs.list.insertAdjacentHTML('beforeend', createMarkup(data[0]));
+      }
+      if (!data.length) {
+        return Notiflix.Notify.failure(
+          'Oops, there is no country with that name'
+        );
+      }
+    })
+    .catch(err => {
+      refs.list.innerHTML = '';
+      if (err.message === '404') {
+        return Notiflix.Notify.failure(
+          'Oops, there is no country with that name'
+        );
+      }
+    });
 }
 
 function createMarkup({ name, capital, population, languages, flags }) {
@@ -62,10 +74,8 @@ function createList(countries) {
     .map(
       ({ flags, name }) =>
         `<li class="item">
-            
               <img src="${flags.svg}" alt="${name.common}" width="50"/>
               <p class="txt">${name.official}</p>
-            
           </li>\n`
     )
     .join('');
