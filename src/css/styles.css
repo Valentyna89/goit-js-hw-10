@@ -54,3 +54,9 @@ h1 {
 span {
   font-weight: bold;
 }
+
+.notify {
+  position: absolute;
+  top: 0;
+  left: 210px;
+}

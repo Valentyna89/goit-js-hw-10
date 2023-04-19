@@ -69,3 +69,11 @@ function createList(countries) {
     )
     .join('');
 }
+
+Notiflix.Notify.init({
+  className: 'notify',
+  width: '280px',
+  position: 'left-top',
+  // distance: '10px',
+  // opacity: 1,
+});
