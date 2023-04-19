@@ -17,6 +17,7 @@ function onInputClick(e) {
   const inputValue = e.target.value.trim();
 
   if (!inputValue) {
+    refs.list.innerHTML = '';
     return;
   }
   fetchCountries(inputValue).then(data => {
@@ -74,6 +75,4 @@ Notiflix.Notify.init({
   className: 'notify',
   width: '280px',
   position: 'left-top',
-  // distance: '10px',
-  // opacity: 1,
 });
